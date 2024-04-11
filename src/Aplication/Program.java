@@ -17,7 +17,7 @@ public class Program {
 		ChassMatch chessMatch = new ChassMatch(); // Criar uma instância de ChassMatch
 		List<ChessPiece> captured = new ArrayList<>();
 
-		while (true) {
+		while (!chessMatch.getCheckMatch()) {
 			try {
 				UI.clearScreen();
 				UI.printMatch(chessMatch, captured); // Chamar o método printBoard() da classe UI
@@ -43,5 +43,7 @@ public class Program {
 				sc.nextLine();
 			}
 		}
+		UI.clearScreen();
+		UI.printMatch(chessMatch, captured);
 	}
 }
