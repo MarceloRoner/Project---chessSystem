@@ -1,7 +1,10 @@
 package Aplication;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import chess.ChassMatch;
 import chess.ChessPiece;
@@ -46,14 +49,16 @@ public class UI {
 			throw new InputMismatchException("Erro lendo posições de xadrez, valores válidos são de a1 até h8. ");
 		}
 	}
-	
-	
-	public static void printMatch(ChassMatch chessMatch) {
+
+	public static void printMatch(ChassMatch chessMatch, List<ChessPiece> captured) {
 		printBoard(chessMatch.getPieces());
+		System.out.println();
+		printCapturedPieces(captured);
 		System.out.println();
 		System.out.println("Turn : " + chessMatch.getTurn());
 		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
 	}
+
 	public static void printBoard(ChessPiece[][] pieces) {
 		for (int i = 0; i < pieces.length; i++) {
 			System.out.print((8 - i) + " ");
@@ -101,4 +106,22 @@ public class UI {
 			}
 		}
 	}
+
+	private static void printCapturedPieces(List<ChessPiece> captured) {
+		List<ChessPiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE)
+				.collect(Collectors.toList());
+		List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK)
+				.collect(Collectors.toList());
+		System.out.println("Captured Pieces: ");
+		System.out.print("Purple: ");
+		System.out.print(ANSI_PURPLE);
+		System.out.println(Arrays.toString(white.toArray()));
+		System.out.print(ANSI_RESET);
+		System.out.print("Red: ");
+		System.out.print(ANSI_RED);
+		System.out.println(Arrays.toString(black.toArray()));
+		System.out.print(ANSI_RESET);
+
+	}
+
 }
