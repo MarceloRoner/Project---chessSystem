@@ -35,16 +35,14 @@ public class Bishop extends ChessPiece {
 
 		}
 
-		// ne
-
+		// ne (northeast)
 		p.setValues(position.getRow() - 1, position.getColum() + 1);
 		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
 			mat[p.getRow()][p.getColum()] = true;
-			p.setValues(p.getRow() - 1, p.getColum() - 1);
+			p.setValues(p.getRow() - 1, p.getColum() + 1); // Corrigido de getColum() - 1 para getColum() + 1
 		}
 		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
 			mat[p.getRow()][p.getColum()] = true;
-
 		}
 
 		// se
