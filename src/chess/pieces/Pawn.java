@@ -5,7 +5,7 @@ import boardgame.Position;
 import chess.ChessPiece;
 import chess.Color;
 
-public abstract class Pawn extends ChessPiece {
+public class Pawn extends ChessPiece {
 
 	public Pawn(Board board, Color color) {
 		super(board, color);
@@ -15,51 +15,39 @@ public abstract class Pawn extends ChessPiece {
 	public boolean[][] possibleMoves() {
 		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColums()];
 
-		Position p = new Position(0, 0);
-		if (getColor() == Color.WHITE) {
-			p.setValues(position.getRow() - 1, position.getColum());
-			if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
-			p.setValues(position.getRow() - 2, position.getColum());
-			Position p2 = new Position(position.getRow() + 1, position.getColum());
-			if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) && getBoard().positionExists(p2)
-					&& !getBoard().thereIsAPiece(p2) && getMoveCount() == 0) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
+		int direction = (getColor() == Color.WHITE) ? -1 : 1; // Define a direção de avanço do peão
 
-			p.setValues(position.getRow() - 1, position.getColum() - 1);
-			if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
-			p.setValues(position.getRow() - 1, position.getColum() + 1);
-			if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
+		Position p = new Position(position.getRow() + direction, position.getColum());
 
-		} else {
-			p.setValues(position.getRow() + 1, position.getColum());
-			if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
-			p.setValues(position.getRow() + 2, position.getColum());
-			Position p2 = new Position(position.getRow() - 1, position.getColum());
-			if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p) && getBoard().positionExists(p2)
-					&& !getBoard().thereIsAPiece(p2) && getMoveCount() == 0) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
+		// Verifica se pode avançar uma casa
+		if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
 
-			p.setValues(position.getRow() + 1, position.getColum() - 1);
-			if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
-				mat[p.getRow()][p.getColum()] = true;
-			}
-			p.setValues(position.getRow() + 1, position.getColum() + 1);
-			if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
-				mat[p.getRow()][p.getColum()] = true;
+			// Verifica se pode avançar duas casas (se ainda não se moveu)
+			if (getMoveCount() == 0) {
+				p.setValues(p.getRow() + direction, p.getColum());
+				if (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+					mat[p.getRow()][p.getColum()] = true;
+				}
 			}
 		}
+
+		// Verifica captura diagonal esquerda
+		p.setValues(position.getRow() + direction, position.getColum() - 1);
+		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+		}
+
+		// Verifica captura diagonal direita
+		p.setValues(position.getRow() + direction, position.getColum() + 1);
+		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+		}
+
 		return mat;
 	}
+
+	
 
 	@Override
 	public String toString() {

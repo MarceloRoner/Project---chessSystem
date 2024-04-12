@@ -5,16 +5,16 @@ import boardgame.Position;
 import chess.ChessPiece;
 import chess.Color;
 
-public class Bishop extends ChessPiece {
+public class Queen extends ChessPiece {
 
-	public Bishop(Board board, Color color) {
+	public Queen(Board board, Color color) {
 		super(board, color);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String toString() {
-		return "B";
+		return "Q";
 	}
 
 	@Override
@@ -23,6 +23,51 @@ public class Bishop extends ChessPiece {
 
 		Position p = new Position(0, 0);
 
+		// above
+
+		p.setValues(position.getRow() - 1, position.getColum());
+		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+			p.setRow(p.getRow() - 1);
+		}
+		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+
+		}
+
+		// left
+
+		p.setValues(position.getRow(), position.getColum() - 1);
+		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+			p.setColum(p.getColum() - 1);
+		}
+		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+
+		}
+
+		// right
+		p.setValues(position.getRow(), position.getColum() + 1);
+		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+			p.setColum(p.getColum() + 1);
+		}
+		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+
+		}
+
+		// bellow
+		p.setValues(position.getRow() + 1, position.getColum());
+		while (getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+			p.setRow(p.getRow() + 1);
+		}
+		if (getBoard().positionExists(p) && isThereOponnentPiece(p)) {
+			mat[p.getRow()][p.getColum()] = true;
+
+		}
 		// nw
 
 		p.setValues(position.getRow() - 1, position.getColum() - 1);
@@ -68,7 +113,6 @@ public class Bishop extends ChessPiece {
 			mat[p.getRow()][p.getColum()] = true;
 
 		}
-
 		return mat;
 	}
 
